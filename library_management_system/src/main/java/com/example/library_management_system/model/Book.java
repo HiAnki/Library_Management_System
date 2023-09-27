@@ -5,12 +5,16 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Book {
     // id title noOfPage genre cost issued author
     @Id
@@ -30,4 +34,7 @@ public class Book {
     @ManyToOne
     @JoinColumn
     Author author;
+
+    @OneToMany(mappedBy = "book",cascade = CascadeType.ALL)
+    List<Transaction> transactions = new ArrayList<>();
 }
