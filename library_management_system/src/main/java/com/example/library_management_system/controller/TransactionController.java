@@ -15,7 +15,7 @@ public class TransactionController {
     @Autowired
     TransactionService transactionService;
     @PostMapping("/issue/book-id/{book-id}/student-id/{student-id}")
-    public ResponseEntity issueBook(@PathVariable("bookId") int bookId, @PathVariable("studentId") int studentId) {
+    public ResponseEntity issueBook(@PathVariable("book-id") int bookId, @PathVariable("student-id") int studentId) {
 
         try{
             IssueBookResponse response = transactionService.issueBook(bookId,studentId);

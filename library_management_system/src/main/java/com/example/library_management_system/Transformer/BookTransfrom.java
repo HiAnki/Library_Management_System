@@ -14,6 +14,7 @@ public class BookTransfrom {
                 .cost(bookRequest.getCost())
                 .genre(bookRequest.getGenre())
                 .noOfPages(bookRequest.getNumberOfPages())
+                .author(null)
                 .build();
     }
 

@@ -12,6 +12,8 @@ import com.example.library_management_system.repository.BookRepository;
 import com.example.library_management_system.repository.StudentRepository;
 import com.example.library_management_system.repository.TransactionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -26,6 +28,9 @@ public class TransactionService {
     StudentRepository studentRepository;
     @Autowired
     TransactionRepo transactionRepo;
+
+    @Autowired
+    JavaMailSender javaMailSender;
     public IssueBookResponse issueBook(int bookId, int studentId) {
 
         // check if book exists
@@ -70,6 +75,16 @@ public class TransactionService {
 
         // send email
 
+        String text = "Hi! " + savedStudent.getName() + " The below book has been issued to you\n" +
+                savedBook.getTitle() + "\non" + savedTransaction.getTransactionTime() + " \nThis is the transaction number: "+savedTransaction.getTransactionNumber();
+
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setFrom("iamlearningwithanki@gmail.com");
+        simpleMailMessage.setTo(savedStudent.getEmail());
+        simpleMailMessage.setSubject("Congrats " + savedStudent.getName() + "!! Your Book has been Issued");
+        simpleMailMessage.setText(text);
+
+        javaMailSender.send(simpleMailMessage);
 
 
         // response

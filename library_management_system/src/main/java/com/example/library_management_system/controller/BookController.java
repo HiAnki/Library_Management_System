@@ -16,10 +16,10 @@ public class BookController {
     BookService bookService;
 
     @PostMapping("/add")
-    public String addBook(BookRequest book) {
+    public String addBook(@RequestBody BookRequest bookRequest) {
 
         try{
-            String response = bookService.addBook(book);
+            String response = bookService.addBook(bookRequest);
             return response;
         }catch (Exception e) {
             return e.getMessage();

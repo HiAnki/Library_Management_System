@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class BookRequest {
     String title;
 
@@ -20,4 +21,5 @@ public class BookRequest {
 
     int authorId;
 
-}
+    }
+

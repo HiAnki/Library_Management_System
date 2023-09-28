@@ -24,14 +24,16 @@ public class BookService {
     BookRepository bookRepository;
     public String addBook(BookRequest bookRequest) {
 
-        Book book = BookTransfrom.bookRequestToBook(bookRequest);
         // does author exist?
-        Optional<Author> authorOptional = authorRepository.findById(bookRequest.getAuthorId());
+        int authorId = bookRequest.getAuthorId();
+        Optional<Author> authorOptional = authorRepository.findById(authorId);
 
         if(authorOptional.isEmpty()) {
-            throw new AuthorNotFoundException("Invalid Author Id!");
+            throw new AuthorNotFoundException("Invalid Author Id! "+authorId);
         }
+
         Author author = authorOptional.get();
+        Book book = BookTransfrom.bookRequestToBook(bookRequest);
         book.setAuthor(author);
 
         author.getBookList().add(book);

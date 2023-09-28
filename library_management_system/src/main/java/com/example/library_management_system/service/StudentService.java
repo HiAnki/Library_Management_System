@@ -18,13 +18,18 @@ public class StudentService {
     @Autowired
     StudentRepository studentRepository;
     public StudentResponse addStudent(StudentRequest studentRequest) {
-        Student student = new Student();
+        Student student = Student.builder()
+                .name(studentRequest.getName())
+                .age(studentRequest.getAge())
+                .email(studentRequest.getEmail())
+                .gender(studentRequest.getGender())
+                .build();
 
         // set student
-        student.setName(studentRequest.getName());
-        student.setAge(studentRequest.getAge());
-        student.setGender(studentRequest.getGender());
-        student.setEmail(studentRequest.getEmail());
+//        student.setName(studentRequest.getName());
+//        student.setAge(studentRequest.getAge());
+//        student.setGender(studentRequest.getGender());
+//        student.setEmail(studentRequest.getEmail());
 
         // create library card
         LibraryCard libraryCard = new LibraryCard();
