@@ -1,6 +1,7 @@
 package com.example.library_management_system.controller;
 
 import com.example.library_management_system.dto.Request.StudentRequest;
+import com.example.library_management_system.dto.Response.BookResponse;
 import com.example.library_management_system.dto.Response.StudentResponse;
 import com.example.library_management_system.model.Student;
 import com.example.library_management_system.service.StudentService;
@@ -49,5 +50,17 @@ public class StudentController {
     public List<String> getAllMales() {
         List<String> allMales = studentService.getAllMales();
         return allMales;
+    }
+
+    // get all the books issued by a student
+    @GetMapping("/get-all-books-issued-to-student-by-id")
+    public ResponseEntity getAllBooksIssuedByStudentId(@RequestParam("student-id") int studentId) {
+
+        try{
+            List<BookResponse> list = studentService.getAllBooksIssuedByStudentId(studentId);
+            return new ResponseEntity(list,HttpStatus.FOUND);
+        }catch (Exception e) {
+            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 }

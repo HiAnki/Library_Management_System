@@ -4,6 +4,7 @@ import com.example.library_management_system.Transformer.BookTransfrom;
 import com.example.library_management_system.dto.Request.BookRequest;
 import com.example.library_management_system.dto.Response.BookResponse;
 import com.example.library_management_system.exceptions.AuthorNotFoundException;
+import com.example.library_management_system.exceptions.BookNotAvailableException;
 import com.example.library_management_system.model.Author;
 import com.example.library_management_system.model.Book;
 import com.example.library_management_system.repository.AuthorRepository;
@@ -52,5 +53,35 @@ public class BookService {
             responses.add(BookTransfrom.bookToBookResponse(book));
         }
         return responses;
+    }
+
+    // delete book
+    public BookResponse deleteBook(int bookId) {
+
+        // check if book exists
+        Optional<Book> bookOptional = bookRepository.findById(bookId);
+        if(bookOptional.isEmpty()) {
+            throw new BookNotAvailableException("Invalid Book Id!");
+        }
+
+        Book book = bookOptional.get();
+        if(book.isIssued()) throw new BookNotAvailableException("Book is issued! Can not be deleted!");
+
+        // delete book from author
+        List<Book> bookList = authorRepository.findById(book.getAuthor().getId()).get().getBookList();
+
+        // delete book from list
+        for(int i=0; i<bookList.size(); i++) {
+            Book listBook = bookList.get(i);
+            // check if bookId same
+            if(listBook.getId()==bookId) {
+                bookList.remove(i);
+                break;
+            }
+        }
+
+        // delete book from repository
+        bookRepository.deleteById(bookId);
+        return BookTransfrom.bookToBookResponse(book);
     }
 }

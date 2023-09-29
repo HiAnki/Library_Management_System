@@ -1,10 +1,14 @@
 package com.example.library_management_system.model;
 
 import com.example.library_management_system.Enum.Gender;
+import com.example.library_management_system.dto.Response.BookResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
@@ -32,5 +36,7 @@ public class Student {
     @JsonIgnore
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
     LibraryCard libraryCard;
+
+
 
 }

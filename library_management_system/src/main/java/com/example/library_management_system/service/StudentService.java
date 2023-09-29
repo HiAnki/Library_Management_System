@@ -2,14 +2,20 @@ package com.example.library_management_system.service;
 
 import com.example.library_management_system.Enum.CardStatus;
 import com.example.library_management_system.Enum.Gender;
+import com.example.library_management_system.Transformer.BookTransfrom;
 import com.example.library_management_system.dto.Request.StudentRequest;
+import com.example.library_management_system.dto.Response.BookResponse;
 import com.example.library_management_system.dto.Response.StudentResponse;
+import com.example.library_management_system.exceptions.StudentNotFoundException;
+import com.example.library_management_system.model.Book;
 import com.example.library_management_system.model.LibraryCard;
 import com.example.library_management_system.model.Student;
+import com.example.library_management_system.model.Transaction;
 import com.example.library_management_system.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.*;
 
 @Service
@@ -69,5 +75,21 @@ public class StudentService {
         }
 
         return allMaleNames;
+    }
+
+    public List<BookResponse> getAllBooksIssuedByStudentId(int studentId) {
+        // check if student is there
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+        if(studentOptional.isEmpty()) throw new StudentNotFoundException("Invalid Student Id!");
+
+        Student student = studentOptional.get();
+        List<Transaction> bookList =  student.getLibraryCard().getTransactions();
+
+        List<BookResponse> responselist = new ArrayList<>();
+        for(Transaction t: bookList) {
+            if(t.getBook().isIssued()==false) continue;
+            responselist.add(BookTransfrom.bookToBookResponse(t.getBook()));
+        }
+        return responselist;
     }
 }

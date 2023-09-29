@@ -25,6 +25,7 @@ public class BookTransfrom {
                 .authorName(book.getAuthor().getName())
                 .cost(book.getCost())
                 .genre(book.getGenre())
+                .issued(book.isIssued())
                 .build();
     }
 }

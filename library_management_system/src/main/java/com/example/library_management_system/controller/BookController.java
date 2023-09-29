@@ -4,6 +4,8 @@ import com.example.library_management_system.dto.Request.BookRequest;
 import com.example.library_management_system.dto.Response.BookResponse;
 import com.example.library_management_system.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +25,18 @@ public class BookController {
             return response;
         }catch (Exception e) {
             return e.getMessage();
+        }
+    }
+
+    // delete a book
+    @DeleteMapping("/delete")
+    public ResponseEntity deleteBook(@RequestParam("bookId") int bookId) {
+
+        try{
+            BookResponse bookResponse = bookService.deleteBook(bookId);
+            return new ResponseEntity(bookResponse,HttpStatus.FOUND);
+        }catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

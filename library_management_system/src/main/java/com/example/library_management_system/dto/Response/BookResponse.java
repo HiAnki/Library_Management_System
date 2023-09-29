@@ -17,4 +17,5 @@ public class BookResponse {
     Genre genre;
     double cost;
     String authorName;
+    boolean issued;
 }

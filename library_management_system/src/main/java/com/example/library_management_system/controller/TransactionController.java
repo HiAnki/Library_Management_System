@@ -24,4 +24,16 @@ public class TransactionController {
             return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
+
+    // return book api
+    @PutMapping("/return-book")
+    public ResponseEntity returnBook(@RequestParam("student-id") int studentId, @RequestParam("book-id") int bookId) {
+
+        try{
+            BookResponse bookResponse = transactionService.returnBook(studentId,bookId);
+            return new ResponseEntity(bookResponse,HttpStatus.FOUND);
+        }catch (Exception e) {
+            return new ResponseEntity(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+    }
 }

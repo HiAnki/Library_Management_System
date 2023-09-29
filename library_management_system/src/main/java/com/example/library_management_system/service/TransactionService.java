@@ -1,6 +1,8 @@
 package com.example.library_management_system.service;
 
 import com.example.library_management_system.Enum.TransactionStatus;
+import com.example.library_management_system.Transformer.BookTransfrom;
+import com.example.library_management_system.dto.Response.BookResponse;
 import com.example.library_management_system.dto.Response.IssueBookResponse;
 import com.example.library_management_system.dto.Response.StudentResponse;
 import com.example.library_management_system.exceptions.BookNotAvailableException;
@@ -87,6 +89,7 @@ public class TransactionService {
         javaMailSender.send(simpleMailMessage);
 
 
+
         // response
         return IssueBookResponse.builder()
                 .bookName(savedBook.getTitle())
@@ -98,5 +101,32 @@ public class TransactionService {
                 .authorName(savedBook.getAuthor().getName())
                 .build();
 
+    }
+
+    public BookResponse returnBook(int studentId, int bookId) {
+        // check if student exists
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+        if(studentOptional.isEmpty()) throw new StudentNotFoundException("Invalid student id!");
+
+        // check if book id is valid
+        Optional<Book> bookOptional = bookRepository.findById(bookId);
+        if(bookOptional.isEmpty()) throw new BookNotAvailableException("Invalid book id");
+
+        // change book status
+        Book book = bookOptional.get();
+        book.setIssued(false);
+        // save changes
+        Book savedBook = bookRepository.save(book);
+
+//        // delete saved book from student's book issued list
+//        for(int i=0; i<studentOptional.get().getIssuedBooks().size(); i++) {
+//            Book b = studentOptional.get().getIssuedBooks().get(i);
+//            if(b.getId()==bookId) {
+//                studentOptional.get().getIssuedBooks().remove(i);
+//                break;
+//            }
+//        }
+
+        return BookTransfrom.bookToBookResponse(savedBook);
     }
 }
