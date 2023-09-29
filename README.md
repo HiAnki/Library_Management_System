@@ -10,3 +10,6 @@
 * Implemented essential CRUD operations for students, books, authors, and transactions, ensuring data consistency and integrity.
 * Developed advanced features, including book issuance, return, and querying books by genre and cost.
 * Successfully implemented a Java email sender to automate notification emails. When a book is issued by a student, the system sends a notification email to the student, enhancing user communication and service quality.
+
+![image](https://github.com/HiAnki/Library_Management_System/assets/101946629/47b35147-7df8-40a9-9d08-932298c22f8c)
+Screen Shot from Postman
